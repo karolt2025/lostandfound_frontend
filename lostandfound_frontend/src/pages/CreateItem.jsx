@@ -11,30 +11,59 @@ function CreateItem() {
     const [status, setStatus] = useState("lost");
     const [location, setLocation] = useState("");
     const [contactEmail, setContactEmail] = useState("");
+    const [image, setImage] = useState(null);
     const [message, setMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const itemData = {
-            title,         
-            description,
-            status,
-            location,
-            contact_email: contactEmail,
-        };
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("status", status);
+        formData.append("location", location);
+        formData.append("contact_email", contactEmail);
+
+        if (image) {
+            formData.append("image", image); // 📸 attach photo
+        }
 
         try {
-            await createItem(itemData);
-            // const data = await createItem(itemData);
+            await createItem(formData);
             setMessage("Item successfully created!");
             setTitle("");
             setDescription("");
             setStatus("lost");
+            setLocation("");
+            setContactEmail("");
+            setImage(null);
         } catch (error) {
             setMessage("Error creating item");
+            console.error(error);
         }
     };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     const itemData = {
+    //         title,
+    //         description,
+    //         status,
+    //         location,
+    //         contact_email: contactEmail,
+    //     };
+
+    //     try {
+    //         await createItem(itemData);
+    //         // const data = await createItem(itemData);
+    //         setMessage("Item successfully created!");
+    //         setTitle("");
+    //         setDescription("");
+    //         setStatus("lost");
+    //     } catch (error) {
+    //         setMessage("Error creating item");
+    //     }
+    // };
 
     return (
         <div>
@@ -92,6 +121,16 @@ function CreateItem() {
                         required
                     />
                 </div>
+
+                <div>
+                    <label>Photo:</label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImage(e.target.files[0])}
+                    />
+                </div>
+
 
                 <button type="submit">Submit Item</button>
             </form>

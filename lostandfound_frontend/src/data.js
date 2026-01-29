@@ -11,15 +11,19 @@ export async function createItem(itemData) {
     const response = await fetch(API.ITEMS, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            // "Content-Type": "application/json",
             "Authorization": `Token ${token}`,
         },
-        body: JSON.stringify(itemData),
+        // body: JSON.stringify(itemData),
+        body: itemData,
     });
 
     if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text);
+        const errorData = await response.json();
+        console.error("Create item error:", errorData);
+        throw new Error("Failed to create item");
+        // const text = await response.text();
+        // throw new Error(text);
     }
 
     return response.json();
