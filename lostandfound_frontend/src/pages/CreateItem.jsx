@@ -1,51 +1,54 @@
 // src/pages/CreateItem.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createItem } from "../data";
 
 function CreateItem() {
-    const [name, setName] = useState("");
+    const navigate = useNavigate();
+
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("lost"); // "lost" or "found"
+    const [status, setStatus] = useState("lost");
+    const [location, setLocation] = useState("");
+    const [contactEmail, setContactEmail] = useState("");
     const [message, setMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Build the request body
-        const itemData = { name, description, status };
+        const itemData = {
+            title,         
+            description,
+            status,
+            location,
+            contact_email: contactEmail,
+        };
 
         try {
-            const response = await fetch("http://localhost:8000/lostandfoundboard/items/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(itemData),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to create item");
-            }
-
+            await createItem(itemData);
+            // const data = await createItem(itemData);
             setMessage("Item successfully created!");
-            setName("");
+            setTitle("");
             setDescription("");
             setStatus("lost");
         } catch (error) {
-            setMessage(`Error: ${error.message}`);
+            setMessage("Error creating item");
         }
     };
 
     return (
         <div>
-            <h1>Add a Lost/Found Item</h1>
+            <h1>Add a Lost / Found Item</h1>
+
             {message && <p>{message}</p>}
+
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Name:</label>
+                    <label>Title:</label>
                     <input
                         type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         required
                     />
                 </div>
@@ -61,10 +64,33 @@ function CreateItem() {
 
                 <div>
                     <label>Status:</label>
-                    <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
                         <option value="lost">Lost</option>
                         <option value="found">Found</option>
                     </select>
+                </div>
+
+                <div>
+                    <label>Location:</label>
+                    <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label>Contact Email:</label>
+                    <input
+                        type="email"
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <button type="submit">Submit Item</button>

@@ -5,8 +5,10 @@ function NavBar() {
 
     // Always check token directly
     const isLoggedIn = !!localStorage.getItem("authToken");
+    // const isLoggedIn = !!localStorage.getItem("token");
 
     const handleLogout = () => {
+        // localStorage.removeItem("token");
         localStorage.removeItem("authToken");
         navigate("/login");
     };
