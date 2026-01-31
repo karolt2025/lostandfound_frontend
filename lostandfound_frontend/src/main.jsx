@@ -8,24 +8,25 @@ import LostAndFoundPage from "./pages/LostAndFoundPage.jsx";
 import LoginPage from "./pages/Login.jsx";
 import RegisterPage from "./pages/Register.jsx";
 import CreateItemPage from "./pages/CreateItem.jsx";
+import ItemDetailPage from "./pages/ItemDetail.jsx"; // 👈 ADD THIS
 
 const router = createBrowserRouter([
   {
-    path: "/",           // Root path
-    element: <NavBar />, // NavBar is always visible
+    path: "/",           // Root layout
+    element: <NavBar />, // NavBar always visible
     children: [
-      { path: "", element: <HomePage /> },            // matches "/"
-      { path: "lostandfound", element: <LostAndFoundPage /> }, // matches "/lostandfound"
-      { path: "login", element: <LoginPage /> },      // matches "/login"
-      { path: "register", element: <RegisterPage /> },// matches "/register"
-      { path: "create-item", element: <CreateItemPage /> }, // matches "/create-item"
+      { path: "", element: <HomePage /> },                 // "/"
+      { path: "lostandfound", element: <LostAndFoundPage /> }, // "/lostandfound"
+      { path: "items/:id", element: <ItemDetailPage /> },  // ✅ "/items/4"
+      { path: "login", element: <LoginPage /> },           // "/login"
+      { path: "register", element: <RegisterPage /> },     // "/register"
+      { path: "create-item", element: <CreateItemPage /> },// "/create-item"
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* Here we wrap our app in the router provider so they render */}
     <RouterProvider router={router} />
   </React.StrictMode>
 );

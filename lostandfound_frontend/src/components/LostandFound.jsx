@@ -1,40 +1,85 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "./LostAndFound.css";
 
 function LostAndFound() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Fetch items from backend
     useEffect(() => {
-        fetch("http://localhost:8000/lostandfoundboard/items/") // update URL if different
-            .then((response) => response.json())
+        fetch("http://localhost:8000/lostandfoundboard/items/")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch items");
+                }
+                return response.json();
+            })
             .then((data) => {
                 setItems(data);
                 setLoading(false);
             })
-            .catch((error) => {
-                console.error("Error fetching items:", error);
+            .catch((err) => {
+                setError(err.message);
                 setLoading(false);
             });
     }, []);
 
-    if (loading) {
-        return <p>Loading items...</p>;
-    }
+    if (loading) return <p>Loading items...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
-        <div>
-            <h1>Lost & Found Items</h1>
+        <div className="page">
+            <h1 className="title">Lost & Found Items</h1>
+
             {items.length === 0 ? (
                 <p>No items found.</p>
             ) : (
-                <ul>
+                <div className="grid">
                     {items.map((item) => (
-                        <li key={item.id}>
-                            <strong>{item.name}</strong> - {item.description}
-                        </li>
+                        <Link
+                            key={item.id}
+                            to={`/items/${item.id}`}
+                            className="card-link"
+                        >
+                            <div className="card">
+                                {item.image ? (
+                                    <img
+                                        src={item.image}
+                                        alt={item.title}
+                                        className="card-image"
+                                    />
+                                ) : (
+                                    <div className="image-placeholder">
+                                        No Image
+                                    </div>
+                                )}
+
+                                <div className="card-body">
+                                    <h3 className="card-title">
+                                        {item.title}
+                                    </h3>
+
+                                    <p className="description">
+                                        {item.description}
+                                    </p>
+
+                                    <span
+                                        className="badge"
+                                        style={{
+                                            backgroundColor:
+                                                item.status === "lost"
+                                                    ? "#fde68a"
+                                                    : "#bbf7d0",
+                                        }}
+                                    >
+                                        {item.status.toUpperCase()}
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );
