@@ -1,0 +1,141 @@
+/* Page background */
+.edit-page {
+    min-height: calc(100vh - 80px);
+    background: #f9fafb;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+}
+
+/* Card container */
+.edit-card {
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Page title */
+.edit-card h1 {
+    margin-bottom: 24px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    text-align: center;
+}
+
+/* Form layout */
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Labels */
+.edit-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Inputs, selects, textarea */
+.edit-form input,
+.edit-form textarea,
+.edit-form select {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus styles */
+.edit-form input:focus,
+.edit-form textarea:focus,
+.edit-form select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Textarea tweaks */
+.edit-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* File input */
+.edit-form input[type="file"] {
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Buttons container */
+.edit-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+/* Save button */
+.save-btn {
+    flex: 1;
+    padding: 14px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.save-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.save-btn:active {
+    transform: scale(0.98);
+}
+
+/* Cancel button */
+.cancel-btn {
+    flex: 1;
+    padding: 14px;
+    background-color: #e5e7eb;
+    color: #111827;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.cancel-btn:hover {
+    background-color: #d1d5db;
+}
+
+.cancel-btn:active {
+    transform: scale(0.98);
+}
+
+/* Loading & error states */
+.loading,
+.error {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 40px;
+    color: #374151;
+}
+
+.error {
+    color: #dc2626;
+}

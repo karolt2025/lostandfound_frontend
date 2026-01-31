@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CreateItem from "./pages/CreateItem";
 import ItemDetail from "./pages/ItemDetail";
-
+import EditItem from "./pages/EditItem";
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/create-item" element={<CreateItem />} />
         <Route path="/items/:id" element={<ItemDetail />} />
+        <Route path="/items/:id/edit" element={<EditItem />} />
       </Routes>
     </Router>
   );

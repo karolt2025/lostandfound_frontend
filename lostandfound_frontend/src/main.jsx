@@ -8,7 +8,10 @@ import LostAndFoundPage from "./pages/LostAndFoundPage.jsx";
 import LoginPage from "./pages/Login.jsx";
 import RegisterPage from "./pages/Register.jsx";
 import CreateItemPage from "./pages/CreateItem.jsx";
-import ItemDetailPage from "./pages/ItemDetail.jsx"; // 👈 ADD THIS
+import ItemDetailPage from "./pages/ItemDetail.jsx"; 
+import EditItem from "./pages/EditItem";
+
+
 
 const router = createBrowserRouter([
   {
@@ -21,6 +24,8 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },           // "/login"
       { path: "register", element: <RegisterPage /> },     // "/register"
       { path: "create-item", element: <CreateItemPage /> },// "/create-item"
+      { path: "items/:id/edit", element: <EditItem />, },   // "/items/4/edit"
+
     ],
   },
 ]);
