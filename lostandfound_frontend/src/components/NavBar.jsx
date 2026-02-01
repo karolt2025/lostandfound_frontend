@@ -1,4 +1,5 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import styles from "./NavBar.module.css";
 
 function NavBar() {
     const navigate = useNavigate();
@@ -13,69 +14,54 @@ function NavBar() {
     };
 
     return (
-        <div>
-            <nav style={styles.nav}>
-                <Link to="/" style={styles.link}>Home</Link>
+        <>
+            <nav className={styles.nav}>
+                {/* LEFT SIDE */}
+                <div className={styles.left}>
+                    <Link to="/" className={styles.logo}>
+                        Home
+                    </Link>
 
-                <Link to="/lostandfound" style={styles.link}>
-                    Lost & Found
-                </Link>
+                    <Link to="/lostandfound" className={styles.link}>
+                        Lost & Found
+                    </Link>
+                </div>
 
-                {isLoggedIn ? (
-                    <>
-                        <Link to="/create-item" style={styles.link}>
-                            Add Item
-                        </Link>
+                {/* RIGHT SIDE */}
+                <div className={styles.right}>
+                    {isLoggedIn ? (
+                        <>
+                            <Link to="/create-item" className={styles.link}>
+                                Add Item
+                            </Link>
 
-                        {/* ✅ NEW: Inbox link */}
-                        <Link to="/inbox" style={styles.link}>
-                            📨 Inbox
-                        </Link>
+                            <Link to="/inbox" className={styles.link}>
+                                📨 Inbox
+                            </Link>
 
-                        <button onClick={handleLogout} style={styles.logoutButton}>
-                            Logout
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <Link to="/login" style={styles.link}>
-                            Login
-                        </Link>
+                            <button
+                                onClick={handleLogout}
+                                className={styles.logoutButton}
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" className={styles.link}>
+                                Login
+                            </Link>
 
-                        <Link to="/register" style={styles.link}>
-                            Register
-                        </Link>
-                    </>
-                )}
+                            <Link to="/register" className={styles.primaryLink}>
+                                Register
+                            </Link>
+                        </>
+                    )}
+                </div>
             </nav>
 
             <Outlet />
-        </div>
+        </>
     );
 }
-
-const styles = {
-    nav: {
-        padding: "12px 20px",
-        backgroundColor: "#f0f0f0",
-        display: "flex",
-        alignItems: "center",
-        gap: "15px",
-    },
-    link: {
-        textDecoration: "none",
-        color: "#111827",
-        fontWeight: "500",
-    },
-    logoutButton: {
-        marginLeft: "10px",
-        padding: "6px 12px",
-        backgroundColor: "#dc2626",
-        color: "#fff",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-    },
-};
-
 export default NavBar;
