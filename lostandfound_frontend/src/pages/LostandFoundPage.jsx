@@ -86,7 +86,7 @@ function LostAndFound() {
                                         {item.status.toUpperCase()}
                                     </span>
 
-                                    <button
+                                    {/* <button
                                         style={styles.shareButton}
                                         onClick={(e) => {
                                             e.stopPropagation(); // 🚫 prevent card navigation
@@ -94,7 +94,7 @@ function LostAndFound() {
                                         }}
                                     >
                                         Share 🔗
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         );

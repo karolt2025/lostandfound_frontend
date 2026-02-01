@@ -16,6 +16,10 @@ function ItemDetail() {
     const [showShareModal, setShowShareModal] = useState(false);
     const [showQR, setShowQR] = useState(false);
 
+    const [showAuthModal, setShowAuthModal] = useState(false);
+    const [redirectAfterAuth, setRedirectAfterAuth] = useState(null);
+
+
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/lostandfoundboard/items/${id}/`, {
             headers: token ? { Authorization: `Token ${token}` } : {},
@@ -35,6 +39,15 @@ function ItemDetail() {
                 setLoading(false);
             });
     }, [id, token]);
+
+    const handleContactOwner = () => {
+        if (!token) {
+            setRedirectAfterAuth(`/items/${id}/contact`);
+            setShowAuthModal(true);
+        } else {
+            navigate(`/items/${id}/contact`);
+        }
+    };
 
     const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this item?")) return;
@@ -105,9 +118,9 @@ function ItemDetail() {
                     Share 🔗
                 </button>
 
-                {userId && userId !== item.owner && (
+                {userId !== item.owner && (
                     <button
-                        onClick={() => navigate(`/items/${id}/contact`)}
+                        onClick={handleContactOwner}
                         style={styles.contactButton}
                     >
                         Contact Owner
@@ -164,6 +177,44 @@ function ItemDetail() {
                 </div>
             )}
 
+            {/* 🆕 AUTH MODAL */}
+            {showAuthModal && (
+                <div style={styles.modalOverlay}>
+                    <div style={styles.modal}>
+                        <h3>Please log in or register to contact the owner</h3>
+
+                        <button
+                            style={styles.modalButton}
+                            onClick={() =>
+                                navigate("/login", {
+                                    state: { redirectTo: redirectAfterAuth },
+                                })
+                            }
+                        >
+                            Log In
+                        </button>
+
+                        <button
+                            style={styles.modalButton}
+                            onClick={() =>
+                                navigate("/register", {
+                                    state: { redirectTo: redirectAfterAuth },
+                                })
+                            }
+                        >
+                            Register
+                        </button>
+
+                        <button
+                            style={styles.modalClose}
+                            onClick={() => setShowAuthModal(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+            {/* SHARE MODAL */}
             {showShareModal && (
                 <div style={styles.modalOverlay}>
                     <div style={styles.modal}>
@@ -323,13 +374,13 @@ const styles = {
         cursor: "pointer",
     },
     actionButtons: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "16px",
-    maxWidth: "280px",
-    flexDirection: "row",
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px",
+        maxWidth: "280px",
+        flexDirection: "row",
 
-},
+    },
 
 
 };

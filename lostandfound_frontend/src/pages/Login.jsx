@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -7,6 +7,9 @@ function Login() {
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const redirectTo = location.state?.redirectTo || "/";
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -43,7 +46,8 @@ function Login() {
             window.dispatchEvent(new Event("storage"));
 
             // redirect
-            navigate("/lostandfound");
+            navigate(redirectTo);
+            // navigate("/lostandfound");
         } catch (err) {
             setError(err.message);
         }
