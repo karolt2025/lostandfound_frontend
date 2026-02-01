@@ -33,59 +33,59 @@ function Inbox() {
     if (loading) return <p>Loading inbox…</p>;
     if (error) return <p>Error: {error}</p>;
 
-    // ✅ ONE conversation per item + other user (keep latest message)
+    /**
+     * ONE conversation per item + other user
+     * newest message wins
+     * unread ONLY if the other user sent it
+     */
     const conversations = Object.values(
         messages.reduce((acc, msg) => {
             const isMine = msg.sender === currentUserId;
 
             const otherUserId = isMine ? msg.receiver : msg.sender;
-
-            const otherUserName =
-                (isMine
-                    ? msg.receiver_username || msg.receiver_email
-                    : msg.sender_username || msg.sender_email) ||
-                `User ${otherUserId}`;
+            const otherUserName = isMine
+                ? msg.receiver_username || msg.receiver_email
+                : msg.sender_username || msg.sender_email;
 
             const key = `${msg.item}-${otherUserId}`;
 
-            if (
-                !acc[key] ||
-                new Date(msg.created_at) > new Date(acc[key].created_at)
-            ) {
+            const hasUnread =
+                !isMine &&
+                msg.receiver === currentUserId &&
+                !msg.is_read;
+
+            if (!acc[key]) {
                 acc[key] = {
                     ...msg,
                     otherUserId,
                     otherUserName,
+                    hasUnread,
                 };
+            } else {
+                // keep newest message
+                if (
+                    new Date(msg.created_at) >
+                    new Date(acc[key].created_at)
+                ) {
+                    acc[key] = {
+                        ...acc[key],
+                        ...msg,
+                        otherUserId,
+                        otherUserName,
+                    };
+                }
+
+                // once unread → stay unread
+                if (hasUnread) {
+                    acc[key].hasUnread = true;
+                }
             }
 
             return acc;
         }, {})
+    ).sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
-    //     messages.reduce((acc, msg) => {
-    //         const isMine = msg.sender === currentUserId;
-
-    //         const otherUserId = isMine ? msg.receiver : msg.sender;
-    //         const otherUserName = isMine
-    //             ? msg.receiver_username || msg.receiver_email
-    //             : msg.sender_username || msg.sender_email;
-
-    //         const key = `${msg.item}-${otherUserId}`;
-
-    //         if (
-    //             !acc[key] ||
-    //             new Date(msg.created_at) > new Date(acc[key].created_at)
-    //         ) {
-    //             acc[key] = {
-    //                 ...msg,
-    //                 otherUserId,
-    //                 otherUserName,
-    //             };
-    //         }
-
-    //         return acc;
-    //     }, {})
-    // );
 
     return (
         <div style={styles.page}>
@@ -100,17 +100,26 @@ function Inbox() {
                             key={`${msg.item}-${msg.otherUserId}`}
                             style={{
                                 ...styles.messageCard,
-                                backgroundColor: msg.is_read
-                                    ? "#f9fafb"
-                                    : "#eef2ff",
+                                backgroundColor: msg.hasUnread
+                                    ? "#eef2ff"
+                                    : "#f9fafb",
+                                fontWeight: msg.hasUnread ? "600" : "400",
                             }}
                         >
                             <div style={styles.topRow}>
                                 <span style={styles.sender}>
                                     Chat with: {msg.otherUserName}
+                                    {msg.hasUnread && (
+                                        <span style={styles.unreadDot}>
+                                            • New
+                                        </span>
+                                    )}
                                 </span>
+
                                 <span style={styles.date}>
-                                    {new Date(msg.created_at).toLocaleDateString()}
+                                    {new Date(
+                                        msg.created_at
+                                    ).toLocaleDateString()}
                                 </span>
                             </div>
 
@@ -172,6 +181,11 @@ const styles = {
     },
     sender: {
         fontWeight: "600",
+    },
+    unreadDot: {
+        color: "#2563eb",
+        fontWeight: "600",
+        marginLeft: "6px",
     },
     date: {
         fontSize: "13px",
@@ -236,33 +250,141 @@ export default Inbox;
 //     if (loading) return <p>Loading inbox…</p>;
 //     if (error) return <p>Error: {error}</p>;
 
-//     // ✅ ONE conversation per item + other user
+//     // ✅ ONE conversation per item + user
+//     // ✅ newest message wins
+//     // ✅ unread only if THEY sent it and it's not read
 //     const conversations = Object.values(
 //         messages.reduce((acc, msg) => {
 //             const isMine = msg.sender === currentUserId;
 
 //             const otherUserId = isMine ? msg.receiver : msg.sender;
 //             const otherUserName = isMine
-//                 ? msg.receiver_username
-//                 : msg.sender_username;
+//                 ? msg.receiver_username || msg.receiver_email
+//                 : msg.sender_username || msg.sender_email;
 
 //             const key = `${msg.item}-${otherUserId}`;
 
-//             // keep newest message only
-//             if (
-//                 !acc[key] ||
-//                 new Date(msg.created_at) > new Date(acc[key].created_at)
-//             ) {
+//             const hasUnread =
+//                 !isMine &&
+//                 msg.receiver === currentUserId &&
+//                 !msg.is_read;
+
+//             if (!acc[key]) {
 //                 acc[key] = {
 //                     ...msg,
 //                     otherUserId,
 //                     otherUserName,
+//                     hasUnread,
 //                 };
+//             } else {
+//                 // keep newest message
+//                 if (
+//                     new Date(msg.created_at) >
+//                     new Date(acc[key].created_at)
+//                 ) {
+//                     acc[key] = {
+//                         ...acc[key],
+//                         ...msg,
+//                     };
+//                 }
+
+//                 // once unread → stay unread until opened
+//                 if (hasUnread) {
+//                     acc[key].hasUnread = true;
+//                 }
 //             }
 
 //             return acc;
 //         }, {})
+//     ).sort(
+//         (a, b) => new Date(b.created_at) - new Date(a.created_at)
 //     );
+//     // // ✅ ONE conversation per item + other user (keep latest message)
+//     // const conversations = Object.values(
+//     //     messages.reduce((acc, msg) => {
+//     //         const isMine = msg.sender === currentUserId;
+
+//     //         const otherUserId = isMine ? msg.receiver : msg.sender;
+
+//     //         const otherUserName =
+//     //             (isMine
+//     //                 ? msg.receiver_username || msg.receiver_email
+//     //                 : msg.sender_username || msg.sender_email) ||
+//     //             `User ${otherUserId}`;
+
+//     //         const key = `${msg.item}-${otherUserId}`;
+
+//     //         if (
+//     //             !acc[key] ||
+//     //             new Date(msg.created_at) > new Date(acc[key].created_at)
+//     //         ) {
+//     //             acc[key] = {
+//     //                 ...msg,
+//     //                 otherUserId,
+//     //                 otherUserName,
+//     //             };
+//     //         }
+
+//     //         return acc;
+//     //     }, {})
+//     // );
+
+//     //     return (
+//     //         <div style={styles.page}>
+//     //             <h1>Inbox</h1>
+
+//     //             {conversations.length === 0 ? (
+//     //                 <p style={styles.empty}>No messages yet 📭</p>
+//     //             ) : (
+//     //                 <div style={styles.list}>
+//     //                     {conversations.map((msg) => (
+//     //                         <div
+//     //                             key={`${msg.item}-${msg.otherUserId}`}
+//     //                             style={{
+//     //                                 ...styles.messageCard,
+//     //                                 backgroundColor: msg.is_read
+//     //                                     ? "#f9fafb"
+//     //                                     : "#eef2ff",
+//     //                             }}
+//     //                         >
+//     //                             <div style={styles.topRow}>
+//     //                                 <span style={styles.sender}>
+//     //                                     Chat with: {msg.otherUserName}
+//     //                                 </span>
+//     //                                 <span style={styles.date}>
+//     //                                     {new Date(msg.created_at).toLocaleDateString()}
+//     //                                 </span>
+//     //                             </div>
+
+//     //                             {msg.item_title && (
+//     //                                 <p style={styles.item}>
+//     //                                     Item: {msg.item_title}
+//     //                                 </p>
+//     //                             )}
+
+//     //                             <p style={styles.preview}>
+//     //                                 {msg.content.length > 100
+//     //                                     ? msg.content.slice(0, 100) + "…"
+//     //                                     : msg.content}
+//     //                             </p>
+
+//     //                             <button
+//     //                                 onClick={() =>
+//     //                                     navigate(
+//     //                                         `/conversation/${msg.item}/${msg.otherUserId}`
+//     //                                     )
+//     //                                 }
+//     //                                 style={styles.replyButton}
+//     //                             >
+//     //                                 Open Chat
+//     //                             </button>
+//     //                         </div>
+//     //                     ))}
+//     //                 </div>
+//     //             )}
+//     //         </div>
+//     //     );
+//     // }
 
 //     return (
 //         <div style={styles.page}>
@@ -273,23 +395,93 @@ export default Inbox;
 //             ) : (
 //                 <div style={styles.list}>
 //                     {conversations.map((msg) => (
+//     <div
+//         key={`${msg.item}-${msg.otherUserId}`}
+//         style={{
+//             ...styles.messageCard,
+//             backgroundColor: msg.hasUnread ? "#eef2ff" : "#f9fafb",
+//             fontWeight: msg.hasUnread ? "600" : "400",
+//         }}
+//     >
+//         <div style={styles.topRow}>
+//             <span style={styles.sender}>
+//                 Chat with: {msg.otherUserName}
+//                 {msg.hasUnread && (
+//                     <span
+//                         style={{
+//                             color: "#2563eb",
+//                             fontWeight: 600,
+//                             marginLeft: 6,
+//                         }}
+//                     >
+//                         • New
+//                     </span>
+//                 )}
+//             </span>
+
+//             <span style={styles.date}>
+//                 {new Date(msg.created_at).toLocaleDateString()}
+//             </span>
+//         </div>
+
+//         {msg.item_title && (
+//             <p style={styles.item}>Item: {msg.item_title}</p>
+//         )}
+
+//         <p style={styles.preview}>
+//             {msg.content.length > 100
+//                 ? msg.content.slice(0, 100) + "…"
+//                 : msg.content}
+//         </p>
+
+//         <button
+//             onClick={() =>
+//                 navigate(
+//                     `/conversation/${msg.item}/${msg.otherUserId}`
+//                 )
+//             }
+//             style={styles.replyButton}
+//         >
+//             Open Chat
+//         </button>
+//     </div>
+// ))}
+
+//                     {/* {conversations.map((msg) => (
 //                         <div
 //                             key={`${msg.item}-${msg.otherUserId}`}
 //                             style={{
 //                                 ...styles.messageCard,
-//                                 backgroundColor: msg.is_read
-//                                     ? "#f9fafb"
-//                                     : "#eef2ff",
+//                                 backgroundColor: msg.hasUnread
+//                                     ? "#eef2ff"
+//                                     : "#f9fafb",
 //                             }}
 //                         >
 //                             <div style={styles.topRow}>
 //                                 <span style={styles.sender}>
-//                                     From: {msg.otherUserName || "User"}
+//                                     Chat with: {msg.otherUserName}
+//                                     {msg.hasUnread && (
+//                                         <span style={{ color: "#2563eb", fontWeight: 600, marginLeft: 6 }}>
+//                                             • New
+//                                         </span>
+//                                     )}
 //                                 </span>
+
 //                                 <span style={styles.date}>
 //                                     {new Date(msg.created_at).toLocaleDateString()}
 //                                 </span>
 //                             </div>
+//                             {/* <div style={styles.topRow}>
+//                                 <span style={styles.sender}>
+//                                     Chat with: {msg.otherUserName}
+//                                     {msg.hasUnread && (
+//                                         <span style={styles.unreadDot}> • New</span>
+//                                     )}
+//                                 </span>
+//                                 <span style={styles.date}>
+//                                     {new Date(msg.created_at).toLocaleDateString()}
+//                                 </span>
+//                             </div> */}
 
 //                             {msg.item_title && (
 //                                 <p style={styles.item}>
@@ -314,7 +506,7 @@ export default Inbox;
 //                                 Open Chat
 //                             </button>
 //                         </div>
-//                     ))}
+//                     ))} */}
 //                 </div>
 //             )}
 //         </div>
@@ -350,6 +542,11 @@ export default Inbox;
 //     sender: {
 //         fontWeight: "600",
 //     },
+//     unreadDot: {
+//         color: "#2563eb",
+//         fontWeight: "600",
+//         marginLeft: "4px",
+//     },
 //     date: {
 //         fontSize: "13px",
 //         color: "#6b7280",
@@ -376,4 +573,3 @@ export default Inbox;
 // };
 
 // export default Inbox;
-
