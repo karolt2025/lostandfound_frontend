@@ -1,9 +1,9 @@
-import { useParams, useNavigate } from "react-router-dom"; // 👈 ADD useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function ItemDetail() {
     const { id } = useParams();
-    const navigate = useNavigate(); // 👈 ADD THIS
+    const navigate = useNavigate();
 
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -14,9 +14,7 @@ function ItemDetail() {
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/lostandfoundboard/items/${id}/`, {
-            headers: token
-                ? { Authorization: `Token ${token}` }
-                : {},
+            headers: token ? { Authorization: `Token ${token}` } : {},
         })
             .then((res) => {
                 if (!res.ok) {
@@ -73,15 +71,24 @@ function ItemDetail() {
             <p><strong>Description:</strong> {item.description}</p>
             <p><strong>Status:</strong> {item.status.toUpperCase()}</p>
             <p><strong>Location:</strong> {item.location}</p>
-            <p><strong>Contact Email:</strong> {item.contact_email}</p>
 
             <p style={styles.date}>
                 Posted on {new Date(item.date_created).toLocaleDateString()}
             </p>
 
+            {/* ✅ CONTACT OWNER (only if not your item) */}
+            {userId && userId !== item.owner && (
+                <button
+                    onClick={() => navigate(`/items/${id}/contact`)}
+                    style={styles.contactButton}
+                >
+                    Contact Owner
+                </button>
+            )}
+
             {/* ✅ OWNER-ONLY EDIT + DELETE */}
             {userId === item.owner && (
-                <div style={{ marginTop: "30px", display: "flex", gap: "12px" }}>
+                <div style={styles.ownerButtons}>
                     <button
                         onClick={() => navigate(`/items/${id}/edit`)}
                         style={styles.editButton}
@@ -119,7 +126,12 @@ const styles = {
         color: "#6b7280",
         fontSize: "14px",
     },
-    editButton: { // 👈 ADD THIS
+    ownerButtons: {
+        marginTop: "30px",
+        display: "flex",
+        gap: "12px",
+    },
+    editButton: {
         padding: "12px 20px",
         backgroundColor: "#2563eb",
         color: "#fff",
@@ -137,17 +149,30 @@ const styles = {
         cursor: "pointer",
         fontSize: "16px",
     },
+    contactButton: {
+        marginTop: "24px",
+        padding: "14px 22px",
+        backgroundColor: "#16a34a",
+        color: "#fff",
+        border: "none",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontSize: "16px",
+        width: "100%",
+        maxWidth: "280px",
+    },
 };
 
 export default ItemDetail;
 
 
-
-// import { useParams } from "react-router-dom";
+// import { useParams, useNavigate } from "react-router-dom"; // 👈 ADD useNavigate
 // import { useEffect, useState } from "react";
 
 // function ItemDetail() {
 //     const { id } = useParams();
+//     const navigate = useNavigate(); // 👈 ADD THIS
+
 //     const [item, setItem] = useState(null);
 //     const [loading, setLoading] = useState(true);
 //     const [error, setError] = useState(null);
@@ -201,7 +226,6 @@ export default ItemDetail;
 //     if (error) return <p>Error: {error}</p>;
 //     if (!item) return null;
 
-
 //     return (
 //         <div style={styles.page}>
 //             <h1>{item.title}</h1>
@@ -223,58 +247,26 @@ export default ItemDetail;
 //                 Posted on {new Date(item.date_created).toLocaleDateString()}
 //             </p>
 
-//             {/* 🔍 DEBUG: remove after testing
-//             <p>Logged in user ID: {userId}</p>
-//             <p>Item owner ID: {item.owner}</p> */}
-
-
-//             {/* ✅ OWNER-ONLY DELETE BUTTON */}
+//             {/* ✅ OWNER-ONLY EDIT + DELETE */}
 //             {userId === item.owner && (
-//                 <button onClick={handleDelete} style={styles.deleteButton}>
-//                     Delete Item
-//                 </button>
+//                 <div style={{ marginTop: "30px", display: "flex", gap: "12px" }}>
+//                     <button
+//                         onClick={() => navigate(`/items/${id}/edit`)}
+//                         style={styles.editButton}
+//                     >
+//                         Edit Item
+//                     </button>
+
+//                     <button
+//                         onClick={handleDelete}
+//                         style={styles.deleteButton}
+//                     >
+//                         Delete Item
+//                     </button>
+//                 </div>
 //             )}
 //         </div>
 //     );
-
-//     // return (
-//     //     <div style={styles.page}>
-//     //         <h1>{item.title}</h1>
-
-//     //         {item.image && (
-//     //             <img
-//     //                 src={item.image}
-//     //                 alt={item.title}
-//     //                 style={styles.image}
-//     //             />
-//     //         )}
-
-//     //         <p><strong>Description:</strong> {item.description}</p>
-//     //         <p><strong>Status:</strong> {item.status.toUpperCase()}</p>
-//     //         <p><strong>Location:</strong> {item.location}</p>
-//     //         <p><strong>Contact Email:</strong> {item.contact_email}</p>
-
-//     //         <p style={styles.date}>
-//     //             Posted on {new Date(item.date_created).toLocaleDateString()}
-//     //         </p>
-
-//     //         {userId === item.owner && (
-//     //             <div style={{ marginTop: "20px" }}>
-//     //                 <button onClick={handleDelete} style={styles.deleteButton}>
-//     //                     Delete Item
-//     //                 </button>
-//     //             </div>
-//     //         )}
-
-
-//     //         {/* ✅ OWNER-ONLY DELETE BUTTON */}
-//     //         {item.owner === userId && (
-//     //             <button onClick={handleDelete} style={styles.deleteButton}>
-//     //                 Delete Item
-//     //             </button>
-//     //         )}
-//     //     </div>
-//     // );
 // }
 
 // const styles = {
@@ -295,8 +287,16 @@ export default ItemDetail;
 //         color: "#6b7280",
 //         fontSize: "14px",
 //     },
+//     editButton: { // 👈 ADD THIS
+//         padding: "12px 20px",
+//         backgroundColor: "#2563eb",
+//         color: "#fff",
+//         border: "none",
+//         borderRadius: "8px",
+//         cursor: "pointer",
+//         fontSize: "16px",
+//     },
 //     deleteButton: {
-//         marginTop: "30px",
 //         padding: "12px 20px",
 //         backgroundColor: "#dc2626",
 //         color: "#fff",

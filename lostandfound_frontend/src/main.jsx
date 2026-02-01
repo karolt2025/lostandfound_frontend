@@ -10,6 +10,10 @@ import RegisterPage from "./pages/Register.jsx";
 import CreateItemPage from "./pages/CreateItem.jsx";
 import ItemDetailPage from "./pages/ItemDetail.jsx"; 
 import EditItem from "./pages/EditItem";
+import ContactOwner from "./pages/ContactOwner";
+import Inbox from "./pages/Inbox";
+import ReplyMessage from "./pages/ReplyMessage";
+import Conversation from "./pages/Conversation";
 
 
 
@@ -25,7 +29,10 @@ const router = createBrowserRouter([
       { path: "register", element: <RegisterPage /> },     // "/register"
       { path: "create-item", element: <CreateItemPage /> },// "/create-item"
       { path: "items/:id/edit", element: <EditItem />, },   // "/items/4/edit"
-
+      { path: "items/:id/contact", element: <ContactOwner />, }, 
+      { path: "inbox", element: <Inbox />, },
+      { path: "messages/:messageId/reply", element: <ReplyMessage />, },
+      { path: "conversation/:itemId/:userId", element: <Conversation />, },
     ],
   },
 ]);
