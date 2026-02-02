@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createItem } from "../data";
+import styles from "./CreateItem.module.css";
 
 function CreateItem() {
     const navigate = useNavigate();
@@ -65,77 +66,169 @@ function CreateItem() {
     //     }
     // };
 
+
     return (
-        <div>
-            <h1>Add a Lost / Found Item</h1>
+        <div className={styles.page}>
+            <div className={styles.container}>
+                <div className={styles.card}>
+                    <h1 className={styles.title}>Add a Lost / Found Item</h1>
+                    <p className={styles.subtitle}>
+                        Help reunite an item with its owner
+                    </p>
 
-            {message && <p>{message}</p>}
+                    {message && (
+                        <p className={styles.message}>{message}</p>
+                    )}
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
+                    <form className={styles.form} onSubmit={handleSubmit}>
+                        <div className={styles.field}>
+                            <label>Title</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Description</label>
+                            <textarea
+                                rows="4"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.row}>
+                            <div className={styles.field}>
+                                <label>Status</label>
+                                <select
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                >
+                                    <option value="lost">Lost</option>
+                                    <option value="found">Found</option>
+                                </select>
+                            </div>
+
+                            <div className={styles.field}>
+                                <label>Location</label>
+                                <input
+                                    type="text"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Contact Email</label>
+                            <input
+                                type="email"
+                                value={contactEmail}
+                                onChange={(e) => setContactEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Photo (optional)</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImage(e.target.files[0])}
+                            />
+                        </div>
+
+                        <button
+                            className={styles.primaryButton}
+                            type="submit"
+                        >
+                            Submit Item
+                        </button>
+                    </form>
                 </div>
-
-                <div>
-                    <label>Description:</label>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Status:</label>
-                    <select
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                    >
-                        <option value="lost">Lost</option>
-                        <option value="found">Found</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Location:</label>
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Contact Email:</label>
-                    <input
-                        type="email"
-                        value={contactEmail}
-                        onChange={(e) => setContactEmail(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Photo:</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setImage(e.target.files[0])}
-                    />
-                </div>
-
-
-                <button type="submit">Submit Item</button>
-            </form>
+            </div>
         </div>
     );
 }
 
 export default CreateItem;
+
+//     return (
+//         <div>
+//             <h1>Add a Lost / Found Item</h1>
+
+//             {message && <p>{message}</p>}
+
+//             <form onSubmit={handleSubmit}>
+//                 <div>
+//                     <label>Title:</label>
+//                     <input
+//                         type="text"
+//                         value={title}
+//                         onChange={(e) => setTitle(e.target.value)}
+//                         required
+//                     />
+//                 </div>
+
+//                 <div>
+//                     <label>Description:</label>
+//                     <textarea
+//                         value={description}
+//                         onChange={(e) => setDescription(e.target.value)}
+//                         required
+//                     />
+//                 </div>
+
+//                 <div>
+//                     <label>Status:</label>
+//                     <select
+//                         value={status}
+//                         onChange={(e) => setStatus(e.target.value)}
+//                     >
+//                         <option value="lost">Lost</option>
+//                         <option value="found">Found</option>
+//                     </select>
+//                 </div>
+
+//                 <div>
+//                     <label>Location:</label>
+//                     <input
+//                         type="text"
+//                         value={location}
+//                         onChange={(e) => setLocation(e.target.value)}
+//                         required
+//                     />
+//                 </div>
+
+//                 <div>
+//                     <label>Contact Email:</label>
+//                     <input
+//                         type="email"
+//                         value={contactEmail}
+//                         onChange={(e) => setContactEmail(e.target.value)}
+//                         required
+//                     />
+//                 </div>
+
+//                 <div>
+//                     <label>Photo:</label>
+//                     <input
+//                         type="file"
+//                         accept="image/*"
+//                         onChange={(e) => setImage(e.target.files[0])}
+//                     />
+//                 </div>
+
+
+//                 <button type="submit">Submit Item</button>
+//             </form>
+//         </div>
+//     );
+// }
+
+// export default CreateItem;

@@ -24,12 +24,13 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/create-item" element={<CreateItem />} />
         <Route path="/items/:id" element={<ItemDetail />} />
+        <Route path="/items/:id" element={<ItemDetail />} />
         <Route path="/items/:id/edit" element={<EditItem />} />
         <Route path="/items/:id/contact" element={<ContactOwner />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/messages/:messageId/reply" element={<ReplyMessage />} />
         <Route path="/conversation/:itemId/:userId" element={<Conversation />}/>
-/>
+
 
       </Routes>
     </Router>

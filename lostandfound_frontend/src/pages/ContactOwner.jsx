@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import styles from "./ContactOwner.module.css";
 
 function ContactOwner() {
     const { id } = useParams(); // item ID
@@ -74,108 +75,156 @@ function ContactOwner() {
     if (error && !ownerId) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
-        <div style={styles.page}>
-            <h1>Contact Owner</h1>
-            <p style={styles.subtitle}>
-                Send a message to the owner of this item.
-            </p>
+        <div className={styles.page}>
+            <div className={styles.container}>
+                <h1 className={styles.title}>Contact Owner</h1>
+                <p className={styles.subtitle}>
+                    Send a message to the owner of this item.
+                </p>
 
-            <form onSubmit={handleSubmit} style={styles.form}>
-                <label style={styles.label}>
-                    Your Message
-                    <textarea
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        rows="5"
-                        placeholder="Hi! I think this item might be mine…"
-                        style={styles.textarea}
-                        required
-                    />
-                </label>
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    <label className={styles.label}>
+                        Your Message
+                        <textarea
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            rows="5"
+                            placeholder="Hi! I think this item might be mine…"
+                            className={styles.textarea}
+                            required
+                        />
+                    </label>
 
-                {error && <p style={styles.error}>{error}</p>}
+                    {error && <p className={styles.error}>{error}</p>}
 
-                <div style={styles.buttons}>
-                    <button
-                        type="submit"
-                        disabled={sending}
-                        style={styles.sendButton}
-                    >
-                        {sending ? "Sending..." : "Send Message"}
-                    </button>
+                    <div className={styles.buttons}>
+                        <button
+                            type="submit"
+                            disabled={sending}
+                            className={styles.primaryButton}
+                        >
+                            {sending ? "Sending..." : "Send Message"}
+                        </button>
 
-                    <button
-                        type="button"
-                        onClick={() => navigate(-1)}
-                        style={styles.cancelButton}
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className={styles.secondaryButton}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
 
-const styles = {
-    page: {
-        maxWidth: "600px",
-        margin: "50px auto",
-        padding: "24px",
-        borderRadius: "12px",
-    },
-    subtitle: {
-        color: "#6b7280",
-        marginBottom: "20px",
-    },
-    form: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-    },
-    label: {
-        display: "flex",
-        flexDirection: "column",
-        fontWeight: "500",
-    },
-    textarea: {
-        marginTop: "6px",
-        padding: "12px",
-        fontSize: "15px",
-        borderRadius: "8px",
-        border: "1px solid #d1d5db",
-        resize: "vertical",
-    },
-    buttons: {
-        display: "flex",
-        gap: "12px",
-        marginTop: "20px",
-    },
-    sendButton: {
-        padding: "12px 20px",
-        backgroundColor: "#16a34a",
-        color: "#fff",
-        border: "none",
-        borderRadius: "8px",
-        cursor: "pointer",
-        fontSize: "16px",
-    },
-    cancelButton: {
-        padding: "12px 20px",
-        backgroundColor: "#6b7280",
-        color: "#fff",
-        border: "none",
-        borderRadius: "8px",
-        cursor: "pointer",
-        fontSize: "16px",
-    },
-    error: {
-        color: "#dc2626",
-        fontSize: "14px",
-    },
-};
-
 export default ContactOwner;
+
+//     return (
+//         <div style={styles.page}>
+//             <h1>Contact Owner</h1>
+//             <p style={styles.subtitle}>
+//                 Send a message to the owner of this item.
+//             </p>
+
+//             <form onSubmit={handleSubmit} style={styles.form}>
+//                 <label style={styles.label}>
+//                     Your Message
+//                     <textarea
+//                         value={message}
+//                         onChange={(e) => setMessage(e.target.value)}
+//                         rows="5"
+//                         placeholder="Hi! I think this item might be mine…"
+//                         style={styles.textarea}
+//                         required
+//                     />
+//                 </label>
+
+//                 {error && <p style={styles.error}>{error}</p>}
+
+//                 <div style={styles.buttons}>
+//                     <button
+//                         type="submit"
+//                         disabled={sending}
+//                         style={styles.sendButton}
+//                     >
+//                         {sending ? "Sending..." : "Send Message"}
+//                     </button>
+
+//                     <button
+//                         type="button"
+//                         onClick={() => navigate(-1)}
+//                         style={styles.cancelButton}
+//                     >
+//                         Cancel
+//                     </button>
+//                 </div>
+//             </form>
+//         </div>
+//     );
+// }
+
+// const styles = {
+//     page: {
+//         maxWidth: "600px",
+//         margin: "50px auto",
+//         padding: "24px",
+//         borderRadius: "12px",
+//     },
+//     subtitle: {
+//         color: "#6b7280",
+//         marginBottom: "20px",
+//     },
+//     form: {
+//         display: "flex",
+//         flexDirection: "column",
+//         gap: "16px",
+//     },
+//     label: {
+//         display: "flex",
+//         flexDirection: "column",
+//         fontWeight: "500",
+//     },
+//     textarea: {
+//         marginTop: "6px",
+//         padding: "12px",
+//         fontSize: "15px",
+//         borderRadius: "8px",
+//         border: "1px solid #d1d5db",
+//         resize: "vertical",
+//     },
+//     buttons: {
+//         display: "flex",
+//         gap: "12px",
+//         marginTop: "20px",
+//     },
+//     sendButton: {
+//         padding: "12px 20px",
+//         backgroundColor: "#16a34a",
+//         color: "#fff",
+//         border: "none",
+//         borderRadius: "8px",
+//         cursor: "pointer",
+//         fontSize: "16px",
+//     },
+//     cancelButton: {
+//         padding: "12px 20px",
+//         backgroundColor: "#6b7280",
+//         color: "#fff",
+//         border: "none",
+//         borderRadius: "8px",
+//         cursor: "pointer",
+//         fontSize: "16px",
+//     },
+//     error: {
+//         color: "#dc2626",
+//         fontSize: "14px",
+//     },
+// };
+
+// export default ContactOwner;
 
 
 // import { useParams, useNavigate } from "react-router-dom";

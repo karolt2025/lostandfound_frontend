@@ -91,15 +91,15 @@ const Homepage = () => {
                     >
                         Browse Lost & Found
                     </button>
-                    <button
+                    {/* <button
                         className={styles.secondaryButton}
                         onClick={handlePostItemClick}
                     >
                         Post an Item
-                    </button>
+                    </button> */}
                 </div>
 
-                <div className={styles.authLinks}>
+                {/* <div className={styles.authLinks}>
                     {!isLoggedIn ? (
                         <button
                             className={styles.authButton}
@@ -118,8 +118,74 @@ const Homepage = () => {
                             Sign Out
                         </button>
                     )}
-                </div>
+                </div> */}
             </section>
+
+            {showAuthModal && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modal}>
+                        <h3>Please log in or register to continue</h3>
+
+                        <button
+                            className={styles.modalButton}
+                            onClick={() =>
+                                navigate("/login", {
+                                    state: { redirectTo: "/items/create" },
+                                })
+                            }
+                        >
+                            Log In
+                        </button>
+
+                        <button
+                            className={styles.modalButton}
+                            onClick={() =>
+                                navigate("/register", {
+                                    state: { redirectTo: "/items/create" },
+                                })
+                            }
+                        >
+                            Register
+                        </button>
+
+                        <button
+                            className={styles.modalClose}
+                            onClick={() => setShowAuthModal(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+            {/* ✅ AUTH MODAL (FIX) */}
+            {showAuthModal && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modal}>
+                        <h3>Please log in or register to continue</h3>
+
+                        <button
+                            className={styles.modalButton}
+                            onClick={() => navigate("/login")}
+                        >
+                            Log In
+                        </button>
+
+                        <button
+                            className={styles.modalButton}
+                            onClick={() => navigate("/register")}
+                        >
+                            Register
+                        </button>
+
+                        <button
+                            className={styles.modalClose}
+                            onClick={() => setShowAuthModal(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* RECENT ITEMS */}
             <section className={styles.section}>
@@ -197,7 +263,7 @@ const Homepage = () => {
                 </h2>
                 <button
                     className={styles.primaryButton}
-                    onClick={handlePostItemClick}
+                    onClick={() => navigate("/register")}
                 >
                     Get started in seconds
                 </button>

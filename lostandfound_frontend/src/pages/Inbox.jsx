@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./Inbox.module.css";
 
 function Inbox() {
     const navigate = useNavigate();
@@ -86,133 +87,199 @@ function Inbox() {
     ).sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
-
     return (
-        <div style={styles.page}>
-            <h1>Inbox</h1>
+        <div className={styles.page}>
+            <div className={styles.container}>
+                <h1 className={styles.title}>Inbox</h1>
 
-            {conversations.length === 0 ? (
-                <p style={styles.empty}>No messages yet 📭</p>
-            ) : (
-                <div style={styles.list}>
-                    {conversations.map((msg) => (
-                        <div
-                            key={`${msg.item}-${msg.otherUserId}`}
-                            style={{
-                                ...styles.messageCard,
-                                backgroundColor: msg.hasUnread
-                                    ? "#eef2ff"
-                                    : "#f9fafb",
-                                fontWeight: msg.hasUnread ? "600" : "400",
-                            }}
-                        >
-                            <div style={styles.topRow}>
-                                <span style={styles.sender}>
-                                    Chat with: {msg.otherUserName}
-                                    {msg.hasUnread && (
-                                        <span style={styles.unreadDot}>
-                                            • New
-                                        </span>
-                                    )}
-                                </span>
-
-                                <span style={styles.date}>
-                                    {new Date(
-                                        msg.created_at
-                                    ).toLocaleDateString()}
-                                </span>
-                            </div>
-
-                            {msg.item_title && (
-                                <p style={styles.item}>
-                                    Item: {msg.item_title}
-                                </p>
-                            )}
-
-                            <p style={styles.preview}>
-                                {msg.content.length > 100
-                                    ? msg.content.slice(0, 100) + "…"
-                                    : msg.content}
-                            </p>
-
-                            <button
-                                onClick={() =>
-                                    navigate(
-                                        `/conversation/${msg.item}/${msg.otherUserId}`
-                                    )
-                                }
-                                style={styles.replyButton}
+                {conversations.length === 0 ? (
+                    <p className={styles.empty}>
+                        No messages yet 📭
+                    </p>
+                ) : (
+                    <div className={styles.list}>
+                        {conversations.map((msg) => (
+                            <div
+                                key={`${msg.item}-${msg.otherUserId}`}
+                                className={`${styles.card} ${msg.hasUnread ? styles.unread : ""
+                                    }`}
                             >
-                                Open Chat
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            )}
+                                <div className={styles.topRow}>
+                                    <span className={styles.sender}>
+                                        {msg.otherUserName}
+                                        {msg.hasUnread && (
+                                            <span className={styles.badge}>
+                                                New
+                                            </span>
+                                        )}
+                                    </span>
+
+                                    <span className={styles.date}>
+                                        {new Date(
+                                            msg.created_at
+                                        ).toLocaleDateString()}
+                                    </span>
+                                </div>
+
+                                {msg.item_title && (
+                                    <p className={styles.item}>
+                                        Item: {msg.item_title}
+                                    </p>
+                                )}
+
+                                <p className={styles.preview}>
+                                    {msg.content.length > 120
+                                        ? msg.content.slice(0, 120) + "…"
+                                        : msg.content}
+                                </p>
+
+                                <button
+                                    className={styles.openButton}
+                                    onClick={() =>
+                                        navigate(
+                                            `/conversation/${msg.item}/${msg.otherUserId}`
+                                        )
+                                    }
+                                >
+                                    Open chat
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
 
-const styles = {
-    page: {
-        maxWidth: "800px",
-        margin: "40px auto",
-        padding: "20px",
-    },
-    empty: {
-        color: "#6b7280",
-        marginTop: "20px",
-    },
-    list: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        marginTop: "20px",
-    },
-    messageCard: {
-        padding: "16px",
-        borderRadius: "12px",
-        border: "1px solid #e5e7eb",
-    },
-    topRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "6px",
-    },
-    sender: {
-        fontWeight: "600",
-    },
-    unreadDot: {
-        color: "#2563eb",
-        fontWeight: "600",
-        marginLeft: "6px",
-    },
-    date: {
-        fontSize: "13px",
-        color: "#6b7280",
-    },
-    item: {
-        fontSize: "14px",
-        color: "#2563eb",
-        marginBottom: "6px",
-    },
-    preview: {
-        fontSize: "15px",
-        color: "#374151",
-        marginBottom: "10px",
-    },
-    replyButton: {
-        padding: "8px 14px",
-        backgroundColor: "#2563eb",
-        color: "#fff",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontSize: "14px",
-    },
-};
-
 export default Inbox;
+
+//     return (
+//         <div style={styles.page}>
+//             <h1>Inbox</h1>
+
+//             {conversations.length === 0 ? (
+//                 <p style={styles.empty}>No messages yet 📭</p>
+//             ) : (
+//                 <div style={styles.list}>
+//                     {conversations.map((msg) => (
+//                         <div
+//                             key={`${msg.item}-${msg.otherUserId}`}
+//                             style={{
+//                                 ...styles.messageCard,
+//                                 backgroundColor: msg.hasUnread
+//                                     ? "#eef2ff"
+//                                     : "#f9fafb",
+//                                 fontWeight: msg.hasUnread ? "600" : "400",
+//                             }}
+//                         >
+//                             <div style={styles.topRow}>
+//                                 <span style={styles.sender}>
+//                                     Chat with: {msg.otherUserName}
+//                                     {msg.hasUnread && (
+//                                         <span style={styles.unreadDot}>
+//                                             • New
+//                                         </span>
+//                                     )}
+//                                 </span>
+
+//                                 <span style={styles.date}>
+//                                     {new Date(
+//                                         msg.created_at
+//                                     ).toLocaleDateString()}
+//                                 </span>
+//                             </div>
+
+//                             {msg.item_title && (
+//                                 <p style={styles.item}>
+//                                     Item: {msg.item_title}
+//                                 </p>
+//                             )}
+
+//                             <p style={styles.preview}>
+//                                 {msg.content.length > 100
+//                                     ? msg.content.slice(0, 100) + "…"
+//                                     : msg.content}
+//                             </p>
+
+//                             <button
+//                                 onClick={() =>
+//                                     navigate(
+//                                         `/conversation/${msg.item}/${msg.otherUserId}`
+//                                     )
+//                                 }
+//                                 style={styles.replyButton}
+//                             >
+//                                 Open Chat
+//                             </button>
+//                         </div>
+//                     ))}
+//                 </div>
+//             )}
+//         </div>
+//     );
+// }
+
+// const styles = {
+//     page: {
+//         maxWidth: "800px",
+//         margin: "40px auto",
+//         padding: "20px",
+//     },
+//     empty: {
+//         color: "#6b7280",
+//         marginTop: "20px",
+//     },
+//     list: {
+//         display: "flex",
+//         flexDirection: "column",
+//         gap: "16px",
+//         marginTop: "20px",
+//     },
+//     messageCard: {
+//         padding: "16px",
+//         borderRadius: "12px",
+//         border: "1px solid #e5e7eb",
+//     },
+//     topRow: {
+//         display: "flex",
+//         justifyContent: "space-between",
+//         marginBottom: "6px",
+//     },
+//     sender: {
+//         fontWeight: "600",
+//     },
+//     unreadDot: {
+//         color: "#2563eb",
+//         fontWeight: "600",
+//         marginLeft: "6px",
+//     },
+//     date: {
+//         fontSize: "13px",
+//         color: "#6b7280",
+//     },
+//     item: {
+//         fontSize: "14px",
+//         color: "#2563eb",
+//         marginBottom: "6px",
+//     },
+//     preview: {
+//         fontSize: "15px",
+//         color: "#374151",
+//         marginBottom: "10px",
+//     },
+//     replyButton: {
+//         padding: "8px 14px",
+//         backgroundColor: "#2563eb",
+//         color: "#fff",
+//         border: "none",
+//         borderRadius: "6px",
+//         cursor: "pointer",
+//         fontSize: "14px",
+//     },
+// };
+
+// export default Inbox;
 
 
 // import { useEffect, useState } from "react";

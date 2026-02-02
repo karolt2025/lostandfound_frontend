@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import styles from "./Auth.module.css";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -54,33 +55,44 @@ function Login() {
     };
 
     return (
-        <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-            <h2>Login</h2>
+<div className={styles.page}>
+            <div className={styles.container}>
+                <div className={styles.card}>
+                    <h1 className={styles.title}>Welcome back</h1>
+                    <p className={styles.subtitle}>
+                        Sign in to continue to Lost & Found
+                    </p>
 
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Username</label>
-                    <input
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
+                    <form className={styles.form} onSubmit={handleLogin}>
+                        <div className={styles.field}>
+                            <label>Username</label>
+                            <input
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <button className={styles.primaryButton} type="submit">
+                            Log in
+                        </button>
+
+                        {error && (
+                            <p className={styles.error}>{error}</p>
+                        )}
+                    </form>
                 </div>
-
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <button type="submit">Log In</button>
-            </form>
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            </div>
         </div>
     );
 }

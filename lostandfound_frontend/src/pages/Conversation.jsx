@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./Conversation.module.css";
 
 function Conversation() {
     const { itemId, userId } = useParams();
@@ -89,135 +90,199 @@ function Conversation() {
     );
 
     return (
-        <div style={styles.wrapper}>
-            {/* Header */}
-            <h2 style={styles.header}>
-                Chat with {otherUserName}
-            </h2>
+        <div className={styles.page}>
+            <div className={styles.container}>
+                {/* Header */}
+                <h2 className={styles.header}>
+                    Chat with {otherUserName}
+                </h2>
 
-            {/* Messages */}
-            <div style={styles.chat}>
-                {sortedMessages.map((msg) => {
-                    const isMine = msg.sender === currentUserId;
-                    const name = msg.sender_username;
-                    const initials = getInitials(name);
+                {/* Messages */}
+                <div className={styles.chat}>
+                    {sortedMessages.map((msg) => {
+                        const isMine = msg.sender === currentUserId;
+                        const name = msg.sender_username;
+                        const initials = getInitials(name);
 
-                    return (
-                        <div
-                            key={msg.id}
-                            style={{
-                                display: "flex",
-                                alignItems: "flex-end",
-                                gap: "8px",
-                                alignSelf: isMine ? "flex-end" : "flex-start",
-                            }}
-                        >
-                            {!isMine && (
-                                <div style={styles.avatar}>
-                                    {initials}
-                                </div>
-                            )}
-
+                        return (
                             <div
-                                style={{
-                                    ...styles.bubble,
-                                    backgroundColor: isMine ? "#2563eb" : "#e5e7eb",
-                                    color: isMine ? "white" : "black",
-                                }}
+                                key={msg.id}
+                                className={`${styles.messageRow} ${isMine ? styles.mine : styles.theirs
+                                    }`}
                             >
-                                <p>{msg.content}</p>
-                                <span style={styles.time}>
-                                    {new Date(msg.created_at).toLocaleTimeString()}
-                                </span>
-                            </div>
+                                {!isMine && (
+                                    <div className={styles.avatar}>
+                                        {initials}
+                                    </div>
+                                )}
 
-                            {isMine && (
-                                <div style={{ ...styles.avatar, ...styles.myAvatar }}>
-                                    {initials}
+                                <div
+                                    className={`${styles.bubble} ${isMine ? styles.myBubble : styles.theirBubble
+                                        }`}
+                                >
+                                    <p>{msg.content}</p>
+                                    <span className={styles.time}>
+                                        {new Date(msg.created_at).toLocaleTimeString()}
+                                    </span>
                                 </div>
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
 
-            {/* Input */}
-            <form onSubmit={sendMessage} style={styles.form}>
-                <input
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type a message…"
-                    style={styles.input}
-                />
-                <button type="submit">Send</button>
-            </form>
+                                {isMine && (
+                                    <div className={`${styles.avatar} ${styles.myAvatar}`}>
+                                        {initials}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Input */}
+                <form onSubmit={sendMessage} className={styles.form}>
+                    <input
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Type a message…"
+                        className={styles.input}
+                    />
+                    <button type="submit" className={styles.sendButton}>
+                        Send
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
 
-const styles = {
-    wrapper: {
-        maxWidth: "700px",
-        margin: "40px auto",
-        display: "flex",
-        flexDirection: "column",
-        height: "80vh",
-    },
-    header: {
-        marginBottom: "12px",
-        fontSize: "20px",
-        fontWeight: "600",
-    },
-    chat: {
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        overflowY: "auto",
-        padding: "12px",
-        border: "1px solid #e5e7eb",
-        borderRadius: "12px",
-        marginBottom: "10px",
-    },
-    bubble: {
-        maxWidth: "70%",
-        padding: "10px 14px",
-        borderRadius: "16px",
-        fontSize: "15px",
-    },
-    time: {
-        display: "block",
-        fontSize: "11px",
-        opacity: 0.7,
-        marginTop: "4px",
-        textAlign: "right",
-    },
-    form: {
-        display: "flex",
-        gap: "8px",
-    },
-    input: {
-        flex: 1,
-        padding: "10px",
-        borderRadius: "8px",
-        border: "1px solid #d1d5db",
-    },
-    avatar: {
-        width: "32px",
-        height: "32px",
-        borderRadius: "50%",
-        backgroundColor: "#9ca3af",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "13px",
-        fontWeight: "600",
-        flexShrink: 0,
-    },
-    myAvatar: {
-        backgroundColor: "#2563eb",
-    },
-};
-
 export default Conversation;
+//         <div style={styles.wrapper}>
+//             {/* Header */}
+//             <h2 style={styles.header}>
+//                 Chat with {otherUserName}
+//             </h2>
+
+//             {/* Messages */}
+//             <div style={styles.chat}>
+//                 {sortedMessages.map((msg) => {
+//                     const isMine = msg.sender === currentUserId;
+//                     const name = msg.sender_username;
+//                     const initials = getInitials(name);
+
+//                     return (
+//                         <div
+//                             key={msg.id}
+//                             style={{
+//                                 display: "flex",
+//                                 alignItems: "flex-end",
+//                                 gap: "8px",
+//                                 alignSelf: isMine ? "flex-end" : "flex-start",
+//                             }}
+//                         >
+//                             {!isMine && (
+//                                 <div style={styles.avatar}>
+//                                     {initials}
+//                                 </div>
+//                             )}
+
+//                             <div
+//                                 style={{
+//                                     ...styles.bubble,
+//                                     backgroundColor: isMine ? "#2563eb" : "#e5e7eb",
+//                                     color: isMine ? "white" : "black",
+//                                 }}
+//                             >
+//                                 <p>{msg.content}</p>
+//                                 <span style={styles.time}>
+//                                     {new Date(msg.created_at).toLocaleTimeString()}
+//                                 </span>
+//                             </div>
+
+//                             {isMine && (
+//                                 <div style={{ ...styles.avatar, ...styles.myAvatar }}>
+//                                     {initials}
+//                                 </div>
+//                             )}
+//                         </div>
+//                     );
+//                 })}
+//             </div>
+
+//             {/* Input */}
+//             <form onSubmit={sendMessage} style={styles.form}>
+//                 <input
+//                     value={newMessage}
+//                     onChange={(e) => setNewMessage(e.target.value)}
+//                     placeholder="Type a message…"
+//                     style={styles.input}
+//                 />
+//                 <button type="submit">Send</button>
+//             </form>
+//         </div>
+//     );
+// }
+
+// const styles = {
+//     wrapper: {
+//         maxWidth: "700px",
+//         margin: "40px auto",
+//         display: "flex",
+//         flexDirection: "column",
+//         height: "80vh",
+//     },
+//     header: {
+//         marginBottom: "12px",
+//         fontSize: "20px",
+//         fontWeight: "600",
+//     },
+//     chat: {
+//         flex: 1,
+//         display: "flex",
+//         flexDirection: "column",
+//         gap: "10px",
+//         overflowY: "auto",
+//         padding: "12px",
+//         border: "1px solid #e5e7eb",
+//         borderRadius: "12px",
+//         marginBottom: "10px",
+//     },
+//     bubble: {
+//         maxWidth: "70%",
+//         padding: "10px 14px",
+//         borderRadius: "16px",
+//         fontSize: "15px",
+//     },
+//     time: {
+//         display: "block",
+//         fontSize: "11px",
+//         opacity: 0.7,
+//         marginTop: "4px",
+//         textAlign: "right",
+//     },
+//     form: {
+//         display: "flex",
+//         gap: "8px",
+//     },
+//     input: {
+//         flex: 1,
+//         padding: "10px",
+//         borderRadius: "8px",
+//         border: "1px solid #d1d5db",
+//     },
+//     avatar: {
+//         width: "32px",
+//         height: "32px",
+//         borderRadius: "50%",
+//         backgroundColor: "#9ca3af",
+//         color: "white",
+//         display: "flex",
+//         alignItems: "center",
+//         justifyContent: "center",
+//         fontSize: "13px",
+//         fontWeight: "600",
+//         flexShrink: 0,
+//     },
+//     myAvatar: {
+//         backgroundColor: "#2563eb",
+//     },
+// };
+
+// export default Conversation;

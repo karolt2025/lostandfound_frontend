@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./Auth.module.css";
 
 function Register() {
     const [username, setUsername] = useState("");
@@ -7,6 +8,8 @@ function Register() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const redirectTo = location.state?.redirectTo || "/login";
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -36,39 +39,54 @@ function Register() {
     };
 
     return (
-        <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
+        <div className={styles.page}>
+            <div className={styles.container}>
+                <div className={styles.card}>
+                    <h1 className={styles.title}>Create an account</h1>
+                    <p className={styles.subtitle}>
+                        Join the Lost & Found community
+                    </p>
+
+                    <form className={styles.form} onSubmit={handleRegister}>
+                        <div className={styles.field}>
+                            <label>Username</label>
+                            <input
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <button className={styles.primaryButton} type="submit">
+                            Register
+                        </button>
+
+                        {error && (
+                            <p className={styles.error}>{error}</p>
+                        )}
+                    </form>
                 </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-            </form>
+            </div>
         </div>
     );
 }

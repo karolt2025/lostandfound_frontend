@@ -1,141 +1,147 @@
-/* Page background */
+/* =====================
+   Page Wrapper
+===================== */
 .edit-page {
     min-height: calc(100vh - 80px);
-    background: #f9fafb;
+    background-color: #f8fafc;
+    padding: 32px 16px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
+        Arial, sans-serif;
 }
 
-/* Card container */
+/* =====================
+   Card Container
+===================== */
 .edit-card {
     width: 100%;
-    max-width: 720px;
-    background: #ffffff;
-    border-radius: 16px;
+    max-width: 640px;
+    background-color: #ffffff;
+    border-radius: 20px;
     padding: 32px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 18px 40px rgba(35, 100, 170, 0.15);
 }
 
-/* Page title */
 .edit-card h1 {
     margin-bottom: 24px;
-    font-size: 28px;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #111827;
-    text-align: center;
+    color: #2364aa;
 }
 
-/* Form layout */
+/* =====================
+   Form
+===================== */
 .edit-form {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-/* Labels */
 .edit-form label {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    font-size: 14px;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #374151;
+    color: #0f172a;
 }
 
-/* Inputs, selects, textarea */
+/* Inputs */
 .edit-form input,
 .edit-form textarea,
 .edit-form select {
-    padding: 12px 14px;
-    border-radius: 10px;
+    margin-top: 8px;
+    padding: 14px;
+    font-size: 0.95rem;
+    border-radius: 14px;
     border: 1px solid #d1d5db;
-    font-size: 15px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    background-color: #ffffff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Focus styles */
-.edit-form input:focus,
-.edit-form textarea:focus,
-.edit-form select:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-/* Textarea tweaks */
 .edit-form textarea {
     resize: vertical;
     min-height: 120px;
 }
 
-/* File input */
-.edit-form input[type="file"] {
-    padding: 8px;
-    font-size: 14px;
+/* Focus state */
+.edit-form input:focus,
+.edit-form textarea:focus,
+.edit-form select:focus {
+    outline: none;
+    border-color: #3da5d9;
+    box-shadow: 0 0 0 3px rgba(61, 165, 217, 0.25);
 }
 
-/* Buttons container */
+/* File input */
+.edit-form input[type="file"] {
+    padding: 10px;
+    background-color: #f1f5f9;
+    cursor: pointer;
+}
+
+/* =====================
+   Buttons
+===================== */
 .edit-buttons {
     display: flex;
-    gap: 12px;
-    margin-top: 28px;
+    gap: 14px;
+    margin-top: 16px;
+    flex-wrap: wrap;
 }
 
 /* Save button */
 .save-btn {
-    flex: 1;
-    padding: 14px;
-    background-color: #2563eb;
-    color: white;
+    background-color: #fec601;
+    color: #0f172a;
     border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .save-btn:hover {
-    background-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(254, 198, 1, 0.35);
 }
 
-.save-btn:active {
-    transform: scale(0.98);
+.save-btn:focus-visible {
+    outline: 3px solid #2364aa;
 }
 
 /* Cancel button */
 .cancel-btn {
-    flex: 1;
-    padding: 14px;
     background-color: #e5e7eb;
-    color: #111827;
+    color: #374151;
     border: none;
-    border-radius: 12px;
-    font-size: 16px;
+    padding: 12px 26px;
+    border-radius: 999px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
 }
 
 .cancel-btn:hover {
     background-color: #d1d5db;
 }
 
-.cancel-btn:active {
-    transform: scale(0.98);
-}
+/* =====================
+   Mobile
+===================== */
+@media (max-width: 480px) {
+    .edit-card {
+        padding: 24px;
+    }
 
-/* Loading & error states */
-.loading,
-.error {
-    text-align: center;
-    font-size: 16px;
-    margin-top: 40px;
-    color: #374151;
-}
+    .edit-card h1 {
+        font-size: 1.4rem;
+    }
 
-.error {
-    color: #dc2626;
+    .edit-buttons {
+        flex-direction: column;
+    }
 }
